@@ -3,14 +3,22 @@
     <label for="text">Text</label>
     <input type="text" name="text">
     <br>
-    <label for="fontIndex">Font Index</label>
-    <input type="number" name="fontIndex">
-    <br>
     <label for="fontSize">Font Size</label>
     <input type="number" name="fontSize">
     <br>
-    <label for="colorIndex">Color Index</label>
-    <input type="number" name="colorIndex">
+    <label for="font">Font</label>
+    <select name="font">
+        {{range $index, $font := .Fonts}}
+            <option value="{{$index}}">{{$font.Name}}</option>
+        {{end}}
+    </select>
+    <br>
+    <label for="color">Color</label>
+    <select name="color">
+        {{range $name, $_ := .Colors}}
+            <option value="{{$name}}">{{$name}}</option>
+        {{end}}
+    </select>
     <br>
     <input type="submit" value="Generate">
 </form>

@@ -14,9 +14,9 @@ import (
 	"golang.org/x/image/math/fixed"
 )
 
-var Colors = []color.Color{
-    colornames.Black,
-    colornames.White,
+var Colors = map[string]color.Color{
+    "black": colornames.Black,
+    "white": colornames.White,
 }
 var needOffset = []rune{
     '。', '、',
