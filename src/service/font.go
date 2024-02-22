@@ -1,13 +1,16 @@
-package main
+package service
 
 import (
 	"os"
 
+	"github.com/adrg/sysfont"
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
 )
 
-func loadFont(fontfile string) *truetype.Font {
+var Fonts = sysfont.NewFinder(nil).List()
+
+func LoadFont(fontfile string) *truetype.Font {
     // Load font
     fontBytes, err := os.ReadFile(fontfile)
     if err != nil {

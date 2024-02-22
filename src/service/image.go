@@ -1,4 +1,4 @@
-package main
+package service
 
 import (
 	"image"
@@ -10,9 +10,14 @@ import (
 
 	"github.com/golang/freetype"
 	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/colornames"
 	"golang.org/x/image/math/fixed"
 )
 
+var Colors = []color.Color{
+    colornames.Black,
+    colornames.White,
+}
 var needOffset = []rune{
     '。', '、',
 }
@@ -26,7 +31,7 @@ func contains(s []rune, e rune) bool {
     return false
 }
 
-func tategakiImage(font *truetype.Font, fontsize float64, fontcolor color.Color, text string) *image.RGBA {
+func TategakiImage(font *truetype.Font, fontsize float64, fontcolor color.Color, text string) *image.RGBA {
     // Calculate the total width and height of the text
     bounds := font.Bounds(fixed.Int26_6(fontsize * 64))
     width := (bounds.Max.X - bounds.Min.X).Ceil()
@@ -41,7 +46,7 @@ func tategakiImage(font *truetype.Font, fontsize float64, fontcolor color.Color,
     ctx := freetype.NewContext()
     ctx.SetFont(font)
     ctx.SetFontSize(fontsize)
-    ctx.SetSrc(image.NewUniform(color.Black))
+    ctx.SetSrc(image.NewUniform(fontcolor))
     ctx.SetDst(img)
     ctx.SetClip(img.Bounds())
 
@@ -49,7 +54,7 @@ func tategakiImage(font *truetype.Font, fontsize float64, fontcolor color.Color,
     x := 0
     y := height
     for _, c := range text {
-        ctx.SetSrc(image.NewUniform(color.Black))
+        ctx.SetSrc(image.NewUniform(fontcolor))
         var pt fixed.Point26_6
         if !contains(needOffset, c) {
             pt = freetype.Pt(x, y)
@@ -63,7 +68,7 @@ func tategakiImage(font *truetype.Font, fontsize float64, fontcolor color.Color,
     return img
 }
 
-func saveToPng(img *image.RGBA, path string) {
+func SaveToPng(img *image.RGBA, path string) {
     // Save the image to a file
     outputFile, err := os.Create(path)
     if err != nil {
